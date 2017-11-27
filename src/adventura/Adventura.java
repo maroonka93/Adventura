@@ -153,6 +153,7 @@ public class Adventura extends Application {
         thingsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         VBox vboxExits = new VBox();
         vboxExits.getChildren().addAll(map, exitsLabel, exitsBar, thingsLabel, things);
+        vboxExits.setAlignment(Pos.CENTER);
         //vbox.autosize();
         //vbox.visibleProperty();
         borderPane.setLeft(vboxExits);

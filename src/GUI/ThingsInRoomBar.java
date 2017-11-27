@@ -11,6 +11,8 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import logika.IGame;
 import logika.Room;
@@ -58,29 +60,45 @@ public class ThingsInRoomBar extends VBox implements Observer {
         for (Thing i : this.game.getHerniPlan().getCurrentRoom().getThingsInRoom()) {
             item = new Button(i.getName(), new ImageView(new Image(adventura.Adventura.class.getResourceAsStream(i.getPicture()),100,100,false,false) {}));
             //ImageView pictureImageView = new ImageView(new Image(adventura.Adventura.class.getResourceAsStream("/source/SpaceMap.png")) {});
-            this.getChildren().add(item);
-        }
+            //this.getChildren().add(item);
+        
             
             
-        item.setOnAction(new EventHandler <ActionEvent>() {
+        item.setOnMouseClicked(new EventHandler <MouseEvent>() {
                 @Override
-                public void handle(ActionEvent event) {
+                public void handle(MouseEvent click) {
                     /*String txt = ExitsBar.this.game.zpracujPrikaz("go to " + r.getName());
                 adventura.Adventura.setCentralTextAppend(txt);*/
                     if (!game.konecHry()){
-                String tx = "pick up "+((Button)event.getSource()).getText(); 
-                String hotovo = game.zpracujPrikaz(tx); 
-                adventura.textCenterPrikaz(tx);
+                        String tx = "";
+                        String hotovo = "";
+                        
+                        
+                        if (click.getButton() == MouseButton.PRIMARY) {
+                            tx = "pick up "+i.getName(); 
+                            hotovo = game.zpracujPrikaz(tx); 
+                            adventura.textCenterPrikaz(tx);
                 adventura.textCenterText(hotovo);
+                        }
+                        else if (click.getButton() == MouseButton.SECONDARY) {
+                            tx = "look into "+i.getName(); 
+                            hotovo = game.zpracujPrikaz(tx); 
+                            adventura.textCenterPrikaz(tx);
+                adventura.textCenterText(hotovo);
+                        }
+                
+                
+                
                 //ExitsBar.this.update();
                 }
                 }
                 });
                     
-            // this.getChildren().add(item);       
-        
+            this.getChildren().add(item);
         }
-    }
+        }
+        }
+
 
 
     public void setAdventura(Adventura adventura) {
