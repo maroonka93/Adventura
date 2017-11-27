@@ -26,17 +26,41 @@ public class Room {
     private Set<Thing> thingsInRoom;
     private boolean accessible = true;
     private String condition = null;
+    private double posLeft;
+    private double posTop;
 
     /**
      * Constructor for room
      *
      * @param nazev 
+     * @param posLeft 
+     * @param posTop 
      */
-    public Room(String nazev) {
+    public Room(String nazev, double posLeft, double posTop) {
         this.name = nazev;
         exits = new HashSet<>();
         this.thingsInRoom = new HashSet<>();
+        this.posLeft = posLeft;
+        this.posTop = posTop;
     }
+
+    public double getPosLeft() {
+        return posLeft;
+    }
+
+    public double getPosTop() {
+        return posTop;
+    }
+
+    public void setPosLeft(double posLeft) {
+        this.posLeft = posLeft;
+    }
+
+    public void setPosTop(double posTop) {
+        this.posTop = posTop;
+    }
+    
+    
     
     /**
      * getter for name

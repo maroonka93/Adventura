@@ -26,6 +26,7 @@ public class CommandPickUp implements ICommand {
 
     @Override
     public String proved(String... parametry) {
+        String answer = "";
         if (parametry.length == 0) {
             // if no thing is given
             return "What am I supposed to pick up?";
@@ -37,13 +38,22 @@ public class CommandPickUp implements ICommand {
         }
         // if a condition has to be met for the thing to be picked up
         if (this.plan.conditionForPickingUp(toBePickedUp)) {
-            plan.getPlayer().getInventory().removeFromInventory(toBePickedUp.getCondition());
+            String added = "You have the right item. You can pick up " + toBePickedUp.getName() + " now." + 
+                    "\n" + plan.getPlayer().getInventory().removeFromInventory(toBePickedUp.getCondition())
+                    + "\n" + plan.getPlayer().getInventory().addToInventory(toBePickedUp);
+            this.plan.notifyObservers();
+            answer =  added
+                    + "\n" + plan.getCurrentRoom().listingOfExits();
+            plan.getCurrentRoom().thingGetsPickedUp(toBePickedUp);
+            this.plan.notifyObservers();
+            return answer;
         }
         if (toBePickedUp.isPickable()) {
-            plan.getPlayer().getInventory().addToInventory(toBePickedUp);
+            answer = plan.getPlayer().getInventory().addToInventory(toBePickedUp);
             plan.getCurrentRoom().thingGetsPickedUp(toBePickedUp);
+            plan.notifyObservers();
             //return toBePickedUp.getName() + " has been picked up.";
-            return plan.getCurrentRoom().listingOfExits();
+            return answer+ "\n" + plan.getCurrentRoom().listingOfExits();
         }
         return toBePickedUp.getName() + " can't be picked up.";
     }

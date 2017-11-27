@@ -5,6 +5,8 @@
  */
 package logika;
 
+import utils.Observer;
+
 /**
  * Command, that allows player to look into things (for example chests)
  * @author Míša
@@ -41,10 +43,13 @@ public class CommandLookInto implements ICommand {
             if(toBeLookedInto.getContent() == null) {
                 return toBeLookedInto.getName() + " is empty.";
             }
-            System.out.println("You have found " + toBeLookedInto.getContent().getName() + ".");
-            this.plan.getPlayer().getInventory().addToInventory(toBeLookedInto.getContent());
+            Thing foundObject = toBeLookedInto.getContent();
+            String added = this.plan.getPlayer().getInventory().addToInventory(foundObject);
             this.plan.getCurrentRoom().returnThingInRoom(nameOfLookedInto).removeContent();
-            return this.plan.getCurrentRoom().listingOfExits();
+            this.plan.notifyObservers();
+            return "You have found " + foundObject.getName() + "." + "\n"
+                    + added
+                    + "\n" + this.plan.getCurrentRoom().listingOfExits();
         }
         return toBeLookedInto.getName() + " can't be looked into.";
     
@@ -54,5 +59,6 @@ public class CommandLookInto implements ICommand {
     public String getNazev() {
         return NAZEV;
     }
+
     
 }

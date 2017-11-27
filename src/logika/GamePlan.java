@@ -5,6 +5,13 @@
  */
 package logika;
 
+import java.util.ArrayList;
+import java.util.List;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import utils.Observer;
+import utils.Subject;
+
 /**
  *Class GamePlan - includes the map and current situation of the game
  * 
@@ -12,17 +19,17 @@ package logika;
  * rooms and things, keeps track of current room
  * @author MP
  */
-public class GamePlan {
+public class GamePlan implements Subject {
     
     private Room currentRoom;
     private Player player = new Player(null, null);
     
-    Room throneRoom;
+    Room beforeGates;
     Room castle;
-    Room surroundings;
+    Room village;
     Room forrest;
         
-    Room wardrobe;
+    Room closet;
     Room bedroom;
     Room kitchen;
         
@@ -34,6 +41,8 @@ public class GamePlan {
     Room trail;
     Room cliff;
     
+    private List<Observer> listOfObservers = new ArrayList<Observer>();
+    
      /**
      *  Constructor creates all the rooms and things in them. It sets "throne room"
      * as starting position.
@@ -44,6 +53,7 @@ public class GamePlan {
         this.setDescriptionsToRooms();
         this.setThingsInRooms();
         this.setRoomConditions();
+        this.listOfObservers = new ArrayList();
     }
     
     /**
@@ -65,10 +75,10 @@ public class GamePlan {
     
     /**
      * getter for throne room
-     * @return Room throneRoom
+     * @return Room beforeGates
      */
-    public Room getThroneRoom() {
-        return throneRoom;
+    public Room getBeforeGates() {
+        return beforeGates;
     }
     
     /**
@@ -77,6 +87,7 @@ public class GamePlan {
      */
     public void setCurrentRoom(Room prostor) {
        currentRoom = prostor;
+       notifyObservers();
     }
 
     /**
@@ -92,24 +103,24 @@ public class GamePlan {
      */
     private void zalozProstoryHry() {
         // vytvĂˇĹ™ejĂ­ se jednotlivĂ© prostory
-        this.throneRoom = new Room("throne room");
-        this.castle = new Room("castle");
-        this.surroundings = new Room("surroundings");
-        this.forrest = new Room("forrest");
+        this.beforeGates = new Room("before gates",50,250);
+        this.castle = new Room("castle",200,180);
+        this.village = new Room("village",200,330);
+        this.forrest = new Room("forrest",420,330);
         
-        this.wardrobe = new Room("wardrobe");
-        this.bedroom = new Room("bedroom");
-        this.kitchen = new Room("kitchen");
+        this.closet = new Room("closet",280,50);
+        this.bedroom = new Room("bedroom",330,180);
+        this.kitchen = new Room("kitchen",180,50);
         
-        this.stables = new Room("stables");
-        this.church = new Room("church");
-        this.inn = new Room("inn");
+        this.stables = new Room("stables",180,450);
+        this.church = new Room("church",280,450);
+        this.inn = new Room("inn",50,350);
         
-        this.cemetery = new Room("cemetery");
-        this.trail = new Room("trail");
-        this.cliff = new Room("cliff");
+        this.cemetery = new Room("cemetery",420,450);
+        this.trail = new Room("trail",500,220);
+        this.cliff = new Room("cliff",530,140);
         
-        currentRoom = throneRoom;
+        currentRoom = beforeGates;
     }
     
     
@@ -117,29 +128,29 @@ public class GamePlan {
      * sets exits from the room
      */
     private void setExitsInRooms() {
-        throneRoom.setExit(castle);
-        throneRoom.setExit(surroundings);
-        castle.setExit(wardrobe);
+        beforeGates.setExit(castle);
+        beforeGates.setExit(village);
+        castle.setExit(closet);
         castle.setExit(bedroom);
         castle.setExit(kitchen);
-        castle.setExit(surroundings);
-        surroundings.setExit(stables);
-        surroundings.setExit(church);
-        surroundings.setExit(inn);
-        surroundings.setExit(forrest);
-        surroundings.setExit(castle);
+        castle.setExit(village);
+        village.setExit(stables);
+        village.setExit(church);
+        village.setExit(inn);
+        village.setExit(forrest);
+        village.setExit(castle);
         forrest.setExit(cemetery);
         forrest.setExit(trail);
         trail.setExit(cliff);
-        wardrobe.setExit(castle);
+        closet.setExit(castle);
         bedroom.setExit(castle);
         kitchen.setExit(castle);
-        stables.setExit(surroundings);
-        church.setExit(surroundings);
-        inn.setExit(surroundings);
+        stables.setExit(village);
+        church.setExit(village);
+        inn.setExit(village);
         cemetery.setExit(forrest);
         trail.setExit(forrest);
-        forrest.setExit(surroundings);
+        forrest.setExit(village);
         cliff.setExit(trail);
     }
     
@@ -147,12 +158,12 @@ public class GamePlan {
      * sets descriptions to rooms
      */
     private void setDescriptionsToRooms() {
-        throneRoom.setDescription("A devastated king paces in the throne room. 'Please, please, our most beloved savior, bring her back to me!'");
+        beforeGates.setDescription("A devastated king paces in the throne room. 'Please, please, our most beloved savior, bring her back to me!'");
         castle.setDescription("The castle is princess' home. Maybe a look around for some helpful clues?");
-        wardrobe.setDescription("Only the chosen ones can enter the wardrobe... or at least those with a key.");
+        closet.setDescription("Only the chosen ones can enter the wardrobe... or at least those with a key.");
         bedroom.setDescription("A guard is on the watch before princess' chamber! However, he looks very thirsty. Maybe he would accept a bribe?");
         kitchen.setDescription("Royal kitchen has the best chef in the entire kingdom. She makes heavenly bread and she does have a soft spot for poor people.");
-        surroundings.setDescription("The village that surrounds the castle's wall is full of all kinds of people... and suprises.");
+        village.setDescription("The village that surrounds the castle's wall is full of all kinds of people... and suprises.");
         this.stables.setDescription("Lots and lots of horses... and a stable boy guarding them. He looks even more devastated than the king. " + "\n" 
                 + "A family tragedy or does he have a thing for our princess? If the latter, he could use something to remind him of her... or not.");
         this.church.setDescription("A beggar sits on the bench, praying silently. 'Our chef, she has the kindest of hearts." + "\n" 
@@ -162,51 +173,70 @@ public class GamePlan {
         this.trail.setDescription("There is no way you're making it on this trail on your own two feet!");
         this.cemetery.setDescription("OOOOHHH! A scary ghost emerges from the tomb! 'Off to save our princess, aye? Lost forever she is... " + "\n" 
                 + "a terrible dragon took her to its home! Not a very bright one tho, thinks anything big and round is a precious stone! Ha-ha!'");
-        this.cliff.setDescription("You found her! Our poor princess is right down the cliff! You climb down to rescue her...");
+        this.cliff.setDescription("You found her! Our poor princess is right down the cliff! You climb down to rescue her... "+ "\n"
+                + "The terrible dragon shifts his focus to your direction. Quickly, think of something!");
     }
     
     /*
     * sets things in rooms
     */
     private void setThingsInRooms() {
-        Thing closet = new Thing (false, "closet", true);
-        this.wardrobe.setThingsInRoom(closet);
-        Thing chest = new Thing (false, "chest", true);
-        Thing money = new Thing (true, "money", false);
-        this.wardrobe.setThingsInRoom(chest);
+        Thing wardrobe = new Thing (false, "wardrobe", true, "/sources/closet.jpg");
+        this.closet.setThingsInRoom(wardrobe);
+        Thing chest = new Thing (false, "chest", true, "/sources/chest.jpg");
+        Thing money = new Thing (true, "money", false, "/sources/money.jpg");
+        this.closet.setThingsInRoom(chest);
         chest.setContent(money);
-        closet.setContent(null);
+        wardrobe.setContent(null);
         
-        Thing mirror = new Thing (false, "mirror", true);
+        Thing mirror = new Thing (false, "mirror", true, "/sources/mirror.jpg");
         //mirror.setContent(null);
-        Thing jeweleryBox = new Thing (false, "jeweleryBox", true);
-        Thing medalion = new Thing (true, "medalion", true);
+        Thing jeweleryBox = new Thing (false, "jeweleryBox", true, "/sources/jeweleryBox.jpg");
+        Thing medalion = new Thing (true, "medalion", true, "/sources/medalion.jpg");
         jeweleryBox.setContent(medalion);
         this.bedroom.setThingsInRoom(mirror);
         this.bedroom.setThingsInRoom(jeweleryBox);
         
-        Thing horse = new Thing (false, "horse", false);
+        Thing horse = new Thing (false, "horse", false, "/sources/horse.png");
         this.stables.setThingsInRoom(horse);
         horse.setCondition("medalion");
         
-        Thing beggarsCoat = new Thing (true, "beggarsCoat", false);
+        Thing beggarsCoat = new Thing (true, "beggarsCoat", false, "/sources/beggarsCoat.jpg");
         this.church.setThingsInRoom(beggarsCoat);
          
-        Thing beer = new Thing (false, "beer", false);
+        Thing beer = new Thing (false, "beer", false, "/sources/beer.jpg");
         this.inn.setThingsInRoom(beer);
         beer.setCondition("money");
         
-        Thing tree = new Thing (false, "tree", true);
-        Thing bush = new Thing (false, "bush", true);
+        Thing tree = new Thing (false, "tree", true, "/sources/tree.jpeg");
+        Thing bush = new Thing (false, "bush", true, "/sources/bush.jpg");
         this.forrest.setThingsInRoom(tree);
         this.forrest.setThingsInRoom(bush);
         
+        Thing bread = new Thing (false, "bread", false, "/sources/bread.jpg");
+            this.kitchen.setThingsInRoom(bread);
+            bread.setCondition("beggarsCoat");
+            
+        Thing tomb = new Thing (false, "tomb", true, "/sources/tomb.jpg");
+        Thing rope = new Thing (true, "rope", false, "/sources/rope.jpg");
+            tomb.setContent(rope);
+            this.cemetery.setThingsInRoom(tomb);
+            Thing rabbitHole = new Thing (false, "rabbitHole", true, "/sources/rabbitHole.jpg");
+            Thing key = new Thing (true, "key", false, "/sources/key.png");
+            rabbitHole.setContent(key);
+            this.forrest.setThingsInRoom(rabbitHole);
+            
+        Thing princess = new Thing(true, "princess", false, "/sources/princess.jpg");
+        princess.setCondition("bread");
+        this.cliff.setThingsInRoom(princess);
+        
+            //this.player.getInventory().addToInventory(key);
     }
     
     /**
      * exceptions that have to made once player chooses his character and gets a free thing
      */
-    public void characterThingsSetUpExceptions() {
+    /*public void characterThingsSetUpExceptions() {
         if (!this.player.getCharacter().equalsIgnoreCase("Priest")) {
             Thing bread = new Thing (false, "bread", false);
             this.kitchen.setThingsInRoom(bread);
@@ -225,15 +255,15 @@ public class GamePlan {
             rabbitHole.setContent(key);
         }
         this.forrest.setThingsInRoom(rabbitHole);
-    }
+    }*/
     
     /*
     * sets locked rooms and things that have to be in players inventory for the
     * room to unlock
     */
     private void setRoomConditions() {
-        this.wardrobe.setAccessible(false);
-        this.wardrobe.setCondition("key");
+        this.closet.setAccessible(false);
+        this.closet.setCondition("key");
         
         this.bedroom.setAccessible(false);
         this.bedroom.setCondition("beer");
@@ -243,6 +273,7 @@ public class GamePlan {
         
         this.cliff.setAccessible(false);
         this.cliff.setCondition("rope");
+        
     }
     
     
@@ -255,7 +286,7 @@ public class GamePlan {
     public boolean conditionForPickingUp(Thing thing) {
         if (this.player.getInventory().isInInventory(thing.getCondition())) {
             thing.setPickable(true);
-            System.out.println("You have the right item. You can pick up " + thing.getName() + " now.");
+            //System.out.println("You have the right item. You can pick up " + thing.getName() + " now.");
             return true;
         }
         return false;
@@ -267,10 +298,12 @@ public class GamePlan {
      * @return boolean
      */
     public boolean conditionForGoingTo(Room room) {
+        /*if (room.getCondition().isEmpty()) {
+            return true;
+        }*/
         if (this.player.getInventory().isInInventory(room.getCondition())) {
-            System.out.println("You have the right item. You can enter the room now.");
             this.player.getInventory().removeFromInventory(room.getCondition());
-            room.setAccessible(true);
+            //room.setAccessible(true);
             return true;
         }
         //System.out.println(room.getDescription());
@@ -281,19 +314,35 @@ public class GamePlan {
      * returns true if player has the right item in the last room for ending the game
      * @return boolean
      */
-    public boolean cliffFinale() {
+    /*public boolean cliffFinale() {
         if (this.currentRoom.equals(cliff)) {
-            System.out.println("The terrible dragon shifts his focus to your direction. Quickly, think of something!");
+            System.out.println();
             if (this.player.getInventory().isInInventory("bread")) {
-                System.out.println("You reach for the bread in your bag and throw it as far away as you can! The dragon," + "\n"
-                + "under the impression it's a precious stone, chases after it. You grab the princess and you both run" + "\n" 
-                        + " as fast as you can toward the castle!");
+                System.out.println();
                 return true;
             }
             System.out.println("OMG you forgot to bring something! Hurry back and find it!");
             return false;
         }
         return false;
+    }*/
+    
+    @Override
+    public void registerObserver(Observer observer) {
+        listOfObservers.add(observer);
     }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        listOfObservers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer listOfObserversItem : listOfObservers) {
+            listOfObserversItem.update();
+        }
+    }
+
     
 }

@@ -6,6 +6,7 @@
 package logika;
 
 import java.util.Objects;
+import javafx.scene.image.Image;
 
 /**
  * Implements things that are in rooms (and inventory)
@@ -19,6 +20,7 @@ public class Thing {
     private final boolean lookableInto;
     private Thing content = null;
     private String condition = null;
+    private String picture;
 
     /**
       Constructor of things, sets whether things are pickable and lookable into, name of the thing
@@ -26,10 +28,11 @@ public class Thing {
      * @param name
      * @param lookableInto
      */
-    public Thing(boolean pickable, String name, boolean lookableInto) {
+    public Thing(boolean pickable, String name, boolean lookableInto, String picture) {
         this.pickable = pickable;
         this.name = name;
         this.lookableInto = lookableInto;
+        this.picture = picture;
     }
 
     /**
@@ -123,6 +126,14 @@ public class Thing {
             return false;
         }
         return true;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
     
    

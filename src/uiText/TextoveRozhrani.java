@@ -6,6 +6,7 @@
 package uiText;
 
 import java.util.Scanner;
+import logika.Game;
 import logika.IGame;
 
 /**
@@ -31,7 +32,7 @@ public class TextoveRozhrani {
      */
     public void hraj() {
         System.out.println(hra.vratUvitani());
-        int choice = 0;
+        /*int choice = 0;
         while (choice != 1 ^ choice != 2 ^ choice != 3) {
             choice = this.prectiInt();
         }
@@ -39,9 +40,9 @@ public class TextoveRozhrani {
         System.out.println("Now choose a name for your " + this.hra.getHerniPlan().getPlayer().getCharacter() + ":");
         this.hra.getHerniPlan().getPlayer().setName(this.prectiString());
        
-        this.hra.getHerniPlan().characterThingsSetUpExceptions();
+        this.hra.getHerniPlan().characterThingsSetUpExceptions();*/
         System.out.println("Let the games begin!");
-        System.out.println(this.hra.getHerniPlan().getThroneRoom().shortRoomDescription() 
+        System.out.println(this.hra.getHerniPlan().getBeforeGates().shortRoomDescription() 
                 + this.hra.getHerniPlan().getCurrentRoom().getDescription() + "\n"
                     + this.hra.getHerniPlan().getCurrentRoom().listingOfExits() + "\n" + 
                     this.hra.getHerniPlan().getCurrentRoom().listThingsInRoom());
@@ -49,7 +50,8 @@ public class TextoveRozhrani {
          
             String radek = prectiString();
             System.out.println(hra.zpracujPrikaz(radek));
-            if (this.hra.getHerniPlan().cliffFinale()) {
+            if (this.hra.getHerniPlan().getPlayer().getInventory().isInInventory("princess")) {
+                //this.hra.setKonecHry(true);
                 break;
             }
         }

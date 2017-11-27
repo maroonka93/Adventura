@@ -65,7 +65,7 @@ public class Player {
      * depending on the number sets a name of character and adds an item to inventory
      * @param choice
      */
-    public void setCharacter(int choice) {
+    /*public void setCharacter(int choice) {
         if (choice == 1) {
             this.character = "Priest";
             this.inventory.addToInventory(new Thing (true, "bread", false));
@@ -78,7 +78,7 @@ public class Player {
             this.character = "Brave Warrior";
             this.inventory.addToInventory(new Thing (true, "rope", false));
         }
-    }
+    }*/
 
     /**
      * setter for inventory

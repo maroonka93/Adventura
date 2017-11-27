@@ -8,6 +8,7 @@ package logika;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import utils.Observer;
 
 /**
  * Creates an inventory of things for player
@@ -28,14 +29,16 @@ public class Inventory {
     /**
      * adds thing to inventory if inventory isn't full yet
      * @param thing
+     * @return 
      */
-    public void addToInventory(Thing thing) {
+    public String addToInventory(Thing thing) {
         if (this.inInventory.size() > 5) {
-            System.out.println("Your inventory is full.");
+            return "Your inventory is full.";
         }
         else {
             this.inInventory.add(thing);
-            System.out.println(thing.getName() + " has been added to your inventory.");
+            
+            return thing.getName() + " has been added to your inventory.";
         }
     }
     
@@ -62,9 +65,9 @@ public class Inventory {
      * removes a thing from invenotry based on its name
      * @param name
      */
-    public void removeFromInventory(String name) {
+    public String removeFromInventory(String name) {
         this.inInventory.remove(findInInventory(name));
-        System.out.println("The " + name + " has been removed from your inventory.");
+        return "The " + name + " has been removed from your inventory.";
     }
     
     /**
@@ -92,5 +95,15 @@ public class Inventory {
         }
         return output;
     }
+
+    public List<Thing> getInInventory() {
+        return inInventory;
+    }
+
+    public void setInInventory(List<Thing> inInventory) {
+        this.inInventory = inInventory;
+    }
+
+    
     
 }

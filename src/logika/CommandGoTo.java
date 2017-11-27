@@ -48,10 +48,18 @@ public class CommandGoTo implements ICommand {
             return "You can't go there.";
         }
         else {
-            this.plan.conditionForGoingTo(sousedniProstor);
-            if (sousedniProstor.isAccessible()) {
+            if (this.plan.conditionForGoingTo(sousedniProstor)) {
+               sousedniProstor.setAccessible(true);
                plan.setCurrentRoom(sousedniProstor);
-               return sousedniProstor.shortRoomDescription() + sousedniProstor.getDescription() + "\n"
+               this.plan.notifyObservers();
+                return "You have the right item. You can enter the room now." +
+                sousedniProstor.shortRoomDescription() + sousedniProstor.getDescription() + "\n"
+                    + sousedniProstor.listingOfExits() + "\n" + sousedniProstor.listThingsInRoom();
+            }
+            if (sousedniProstor.isAccessible()) {
+                plan.setCurrentRoom(sousedniProstor);
+                plan.notifyObservers();
+            return sousedniProstor.shortRoomDescription() + sousedniProstor.getDescription() + "\n"
                     + sousedniProstor.listingOfExits() + "\n" + sousedniProstor.listThingsInRoom();
             }
             else {

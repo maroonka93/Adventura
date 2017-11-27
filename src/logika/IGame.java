@@ -45,5 +45,7 @@ public interface IGame {
      *  @return GamePlan
      */
      public GamePlan getHerniPlan();
+
+    public void setKonecHry(boolean b);
     
 }
