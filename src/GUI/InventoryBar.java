@@ -47,7 +47,7 @@ public class InventoryBar extends VBox implements Observer{
         this.getChildren().removeAll(getChildren());
         Button item = null;
         for (Thing i : this.game.getGamePlan().getPlayer().getInventory().getInInventory()) {
-            item = new Button(i.getName(), new ImageView(new Image(adventura.Adventura.class.getResourceAsStream(i.getPicture()),100,100,false,false) {}));
+            item = new Button(i.getName(), new ImageView(new Image(main.Dragoland.class.getResourceAsStream(i.getPicture()),100,100,false,false) {}));
             this.getChildren().add(item);
             item.setContentDisplay(ContentDisplay.TOP);
         }

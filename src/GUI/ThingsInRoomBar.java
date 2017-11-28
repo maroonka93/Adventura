@@ -5,7 +5,7 @@
  */
 package GUI;
 
-import adventura.Adventura;
+import main.Dragoland;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -25,7 +25,7 @@ import utils.Observer;
 public class ThingsInRoomBar extends GridPane implements Observer {
 
     private IGame game;
-    private Adventura adventura;
+    private Dragoland adventura;
 
     public ThingsInRoomBar(IGame game) {
         this.game = game;
@@ -55,7 +55,7 @@ public class ThingsInRoomBar extends GridPane implements Observer {
         if (!this.game.getGamePlan().getCurrentRoom().getThingsInRoom().isEmpty()) {
             
         for (Thing i : this.game.getGamePlan().getCurrentRoom().getThingsInRoom()) {
-            item = new Button(i.getName(), new ImageView(new Image(adventura.Adventura.class.getResourceAsStream(i.getPicture()),100,100,false,false) {}));
+            item = new Button(i.getName(), new ImageView(new Image(main.Dragoland.class.getResourceAsStream(i.getPicture()),100,100,false,false) {}));
             item.setContentDisplay(ContentDisplay.TOP);
         
             
@@ -113,7 +113,7 @@ public class ThingsInRoomBar extends GridPane implements Observer {
 
 
 
-    public void setAdventura(Adventura adventura) {
+    public void setAdventura(Dragoland adventura) {
         this.adventura = adventura;
     }
     

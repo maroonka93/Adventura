@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package adventura;
+package main;
 
 import GUI.ExitsBar;
 import GUI.InventoryBar;
@@ -35,7 +35,7 @@ import uiText.TextUI;
  * Runnable file of adventure. Contains main.
  * @author MP
  */
-public class Adventura extends Application {
+public class Dragoland extends Application {
     
     private TextArea centralText;
     private IGame game;

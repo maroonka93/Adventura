@@ -5,7 +5,7 @@
  */
 package GUI;
 
-import adventura.Adventura;
+import main.Dragoland;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -26,9 +26,9 @@ public class Menu extends MenuBar{
     
     private IGame game;
     
-    private Adventura adventura;
+    private Dragoland adventura;
 
-    public Menu(IGame game, Adventura adventura) {
+    public Menu(IGame game, Dragoland adventura) {
         this.game = game;
         this.adventura = adventura;
         init();
@@ -111,7 +111,7 @@ public class Menu extends MenuBar{
                 
                 WebView webView = new WebView();
                 
-                webView.getEngine().load(Adventura.class.getResource("/sources/help.html").toExternalForm());
+                webView.getEngine().load(Dragoland.class.getResource("/sources/help.html").toExternalForm());
                 
                 stage.setScene(new Scene(webView, 500,500));
                 stage.show();

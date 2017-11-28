@@ -5,7 +5,7 @@
  */
 package GUI;
 
-import adventura.Adventura;
+import main.Dragoland;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -22,7 +22,7 @@ import utils.Observer;
 public class ExitsBar extends HBox implements Observer {
     
     private IGame game;
-    private Adventura adventura;
+    private Dragoland adventura;
 
     public ExitsBar(IGame game) {
         this.game = game;
@@ -67,7 +67,7 @@ public class ExitsBar extends HBox implements Observer {
     
 }
 
-    public void setAdventura(Adventura adventura) {
+    public void setAdventura(Dragoland adventura) {
         this.adventura = adventura;
     }
     

@@ -32,7 +32,7 @@ public class Map extends AnchorPane implements Observer {
     * initializes map - picture and dot
     */
     private void init() {
-        ImageView pictureImageView = new ImageView(new Image(adventura.Adventura.class.getResourceAsStream("/sources/SpaceMap.png")) {});
+        ImageView pictureImageView = new ImageView(new Image(main.Dragoland.class.getResourceAsStream("/sources/SpaceMap.png")) {});
 
         dot = new Circle(12, Paint.valueOf("pink"));
         
