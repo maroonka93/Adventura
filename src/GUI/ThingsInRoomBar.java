@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import logika.IGame;
 import logika.Room;
@@ -23,7 +24,7 @@ import utils.Observer;
  *
  * @author mp
  */
-public class ThingsInRoomBar extends VBox implements Observer {
+public class ThingsInRoomBar extends HBox implements Observer {
 
     private IGame game;
     private Adventura adventura;
@@ -76,9 +77,17 @@ public class ThingsInRoomBar extends VBox implements Observer {
                         
                         if (click.getButton() == MouseButton.PRIMARY) {
                             tx = "pick up "+i.getName(); 
-                            hotovo = game.zpracujPrikaz(tx); 
+                            hotovo = game.zpracujPrikaz(tx);
                             adventura.textCenterPrikaz(tx);
-                adventura.textCenterText(hotovo);
+                            
+                            if (game.getHerniPlan().getPlayer().getInventory().isInInventory("princess")) {
+                                game.setKonecHry(true);
+                                adventura.textCenterText(hotovo + "\n" + game.vratEpilog());
+                                adventura.getEnterCommand().setEditable(false);
+                            }
+                            else {
+                                adventura.textCenterText(hotovo);
+                            }
                         }
                         else if (click.getButton() == MouseButton.SECONDARY) {
                             tx = "look into "+i.getName(); 

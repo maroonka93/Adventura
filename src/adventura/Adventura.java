@@ -24,6 +24,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -97,6 +99,9 @@ public class Adventura extends Application {
         BorderPane borderPane = new BorderPane();
         
         centralText = new TextArea();
+        centralText.setPrefHeight(400);
+        centralText.setPrefWidth(600);
+        centralText.setMaxSize(600, 400);
         centralText.setText(game.vratUvitani());
         centralText.setEditable(false);
         borderPane.setCenter(centralText);
@@ -118,7 +123,8 @@ public class Adventura extends Application {
                 
                 enterCommand.setText("");
                 
-                if (game.konecHry()) {
+                if (game.getHerniPlan().getPlayer().getInventory().isInInventory("princess")) {
+                    game.setKonecHry(true);
                     enterCommand.setEditable(false);
                     centralText.appendText(game.vratEpilog());
                 }
@@ -141,8 +147,10 @@ public class Adventura extends Application {
         //borderPane.getChildren().addAll(invBar, invLabel);
         Label invLabel = new Label("Inventory: ");
         invLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        invLabel.setAlignment(Pos.TOP_LEFT);
         VBox vbox = new VBox();
         vbox.getChildren().addAll(invLabel, invBar);
+        vbox.setMinWidth(100);
         //vbox.autosize();
         //vbox.visibleProperty();
         borderPane.setRight(vbox);
@@ -151,14 +159,22 @@ public class Adventura extends Application {
         exitsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         Label thingsLabel = new Label("Things in this room: ");
         thingsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        VBox vboxExits = new VBox();
-        vboxExits.getChildren().addAll(map, exitsLabel, exitsBar, thingsLabel, things);
-        vboxExits.setAlignment(Pos.CENTER);
+        HBox hboxExits = new HBox();
+        hboxExits.getChildren().addAll(exitsBar);
+        /*HBox hboxThings = new HBox();
+        hboxThings.setLayoutX(1);
+        hboxThings.getChildren().addAll(things);*/
+        GridPane grid = new GridPane();
+        grid.setLayoutX(1);
+        grid.setLayoutY(2);
+        grid.getChildren().addAll(things);
+        VBox buttons = new VBox();
+        buttons.getChildren().addAll(map, exitsLabel, hboxExits, thingsLabel, grid);
         //vbox.autosize();
         //vbox.visibleProperty();
-        borderPane.setLeft(vboxExits);
+        borderPane.setLeft(buttons);
         
-        Scene scene = new Scene(borderPane, 1250, 700);
+        Scene scene = new Scene(borderPane, 1200, 500);
         primaryStage.setTitle("Adventura");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -195,5 +211,23 @@ public class Adventura extends Application {
     {
          centralText.appendText("\n\n" + text + "\n");;   
     }
+
+    public TextField getEnterCommand() {
+        return enterCommand;
+    }
+
+    public InventoryBar getInvBar() {
+        return invBar;
+    }
+
+    public ExitsBar getExitsBar() {
+        return exitsBar;
+    }
+
+    public ThingsInRoomBar getThings() {
+        return things;
+    }
+    
+    
     
 }

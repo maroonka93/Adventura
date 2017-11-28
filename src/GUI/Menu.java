@@ -69,6 +69,10 @@ public class Menu extends MenuBar{
                 adventura.getMap().newGame(game);
                 adventura.setGame(game);
                 adventura.getCentralText().setText(game.vratUvitani());
+                adventura.getMap().newGame(game);
+                adventura.getExitsBar().newGame(game);
+                adventura.getInvBar().newGame(game);
+                adventura.getThings().newGame(game);
             }
         });
         
@@ -94,11 +98,11 @@ public class Menu extends MenuBar{
             public void handle(ActionEvent event) {
 
                 Stage stage = new Stage();
-                stage.setTitle("Napovea");
+                stage.setTitle("Napoveda");
                 
                 WebView webView = new WebView();
                 
-                webView.getEngine().load(Adventura.class.getResource("/source/napoveda.html").toExternalForm());
+                webView.getEngine().load(Adventura.class.getResource("/source/help.html").toExternalForm());
                 
                 stage.setScene(new Scene(webView, 500,500));
                 stage.show();

@@ -125,4 +125,9 @@ public class Game implements IGame {
         return herniPlan;
      }
     
+     /*public void gameIsWon() {
+         this.setKonecHry(true);
+         this.vratEpilog();
+     }*/
+     
 }

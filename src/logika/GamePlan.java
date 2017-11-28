@@ -103,22 +103,22 @@ public class GamePlan implements Subject {
      */
     private void zalozProstoryHry() {
         // vytvĂˇĹ™ejĂ­ se jednotlivĂ© prostory
-        this.beforeGates = new Room("before gates",50,250);
-        this.castle = new Room("castle",200,180);
-        this.village = new Room("village",200,330);
-        this.forrest = new Room("forrest",420,330);
+        this.beforeGates = new Room("before gates",30,120);
+        this.castle = new Room("castle",90,80);
+        this.village = new Room("village",90,155);
+        this.forrest = new Room("forrest",200,155);
         
-        this.closet = new Room("closet",280,50);
-        this.bedroom = new Room("bedroom",330,180);
-        this.kitchen = new Room("kitchen",180,50);
+        this.closet = new Room("closet",130,20);
+        this.bedroom = new Room("bedroom",170,85);
+        this.kitchen = new Room("kitchen",75,20);
         
-        this.stables = new Room("stables",180,450);
-        this.church = new Room("church",280,450);
-        this.inn = new Room("inn",50,350);
+        this.stables = new Room("stables",80,220);
+        this.church = new Room("church",130,220);
+        this.inn = new Room("inn",25,165);
         
-        this.cemetery = new Room("cemetery",420,450);
-        this.trail = new Room("trail",500,220);
-        this.cliff = new Room("cliff",530,140);
+        this.cemetery = new Room("cemetery",200,220);
+        this.trail = new Room("trail",247,110);
+        this.cliff = new Room("cliff",260,70);
         
         currentRoom = beforeGates;
     }

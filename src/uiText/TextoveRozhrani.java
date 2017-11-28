@@ -50,9 +50,10 @@ public class TextoveRozhrani {
          
             String radek = prectiString();
             System.out.println(hra.zpracujPrikaz(radek));
-            if (this.hra.getHerniPlan().getPlayer().getInventory().isInInventory("princess")) {
-                //this.hra.setKonecHry(true);
-                break;
+            if (this.hra.getHerniPlan().getCurrentRoom().getName().matches("cliff") && 
+                    this.hra.getHerniPlan().getPlayer().getInventory().isInInventory("princess")) {
+                 this.hra.setKonecHry(true);
+                //break;
             }
         }
 

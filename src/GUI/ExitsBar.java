@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -24,7 +25,7 @@ import utils.Observer;
  *
  * @author mp
  */
-public class ExitsBar extends VBox implements Observer {
+public class ExitsBar extends HBox implements Observer {
     
     private IGame game;
     private Adventura adventura;
