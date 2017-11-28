@@ -6,94 +6,88 @@
 package GUI;
 
 import adventura.Adventura;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import logika.IGame;
-import logika.Room;
-import logika.Thing;
+import javafx.scene.layout.GridPane;
+import logic.IGame;
+import logic.Thing;
 import utils.Observer;
 
 /**
- *
+ * creates a grid of buttons, one button for each thing in current room
  * @author mp
  */
-public class ThingsInRoomBar extends HBox implements Observer {
+public class ThingsInRoomBar extends GridPane implements Observer {
 
     private IGame game;
     private Adventura adventura;
 
     public ThingsInRoomBar(IGame game) {
         this.game = game;
-        game.getHerniPlan().registerObserver(this);
-        //this.newGame(game);
+        game.getGamePlan().registerObserver(this);
         update();
     }
-
-
-    /*private void init() {
-        ImageView pictureImageView = new ImageView(new Image(adventura.Adventura.class.getResourceAsStream("/source/SpaceMap.png")) {});
-        
-        this.getChildren().addAll(pictureImageView);
-        update();
-        
-    }*/
     
+    /*
+    * 
+    */
     public void newGame(IGame newGame) {
-        game.getHerniPlan().removeObserver(this);
+        game.getGamePlan().removeObserver(this);
         game = newGame;
-        game.getHerniPlan().registerObserver(this);
+        game.getGamePlan().registerObserver(this);
         update();
     }
 
+    /*
+    * creates a grid of buttons, 2 buttons in first row, each button contains image
+    * of the thing and its name below it
+    * assigns command to left click (pick up) and right click (look into)
+    */ 
     @Override
     public void update() {
         this.getChildren().removeAll(getChildren());
         Button item = null;
-        if (!this.game.getHerniPlan().getCurrentRoom().getThingsInRoom().isEmpty()) {
+        if (!this.game.getGamePlan().getCurrentRoom().getThingsInRoom().isEmpty()) {
             
-        for (Thing i : this.game.getHerniPlan().getCurrentRoom().getThingsInRoom()) {
+        for (Thing i : this.game.getGamePlan().getCurrentRoom().getThingsInRoom()) {
             item = new Button(i.getName(), new ImageView(new Image(adventura.Adventura.class.getResourceAsStream(i.getPicture()),100,100,false,false) {}));
-            //ImageView pictureImageView = new ImageView(new Image(adventura.Adventura.class.getResourceAsStream("/source/SpaceMap.png")) {});
-            //this.getChildren().add(item);
+            item.setContentDisplay(ContentDisplay.TOP);
         
             
             
         item.setOnMouseClicked(new EventHandler <MouseEvent>() {
                 @Override
                 public void handle(MouseEvent click) {
-                    /*String txt = ExitsBar.this.game.zpracujPrikaz("go to " + r.getName());
-                adventura.Adventura.setCentralTextAppend(txt);*/
-                    if (!game.konecHry()){
-                        String tx = "";
-                        String hotovo = "";
+ 
+                    if (!game.endOfGame()){
+                        String command = "";
+                        String gameAnswer = "";
                         
                         
                         if (click.getButton() == MouseButton.PRIMARY) {
-                            tx = "pick up "+i.getName(); 
-                            hotovo = game.zpracujPrikaz(tx);
-                            adventura.textCenterPrikaz(tx);
+                            command = "pick up "+i.getName(); 
+                            gameAnswer = game.executeCommand(command);
+                            adventura.appendCommandFromButton(command);
                             
-                            if (game.getHerniPlan().getPlayer().getInventory().isInInventory("princess")) {
-                                game.setKonecHry(true);
-                                adventura.textCenterText(hotovo + "\n" + game.vratEpilog());
+                            if (game.getGamePlan().getPlayer().getInventory().isInInventory("princess")) {
+                                game.setEndOfGame(true);
+                                adventura.appendGameReplyToButtonAction(gameAnswer + "\n" + game.returnEpilogue());
                                 adventura.getEnterCommand().setEditable(false);
                             }
                             else {
-                                adventura.textCenterText(hotovo);
+                                adventura.appendGameReplyToButtonAction(gameAnswer);
                             }
                         }
                         else if (click.getButton() == MouseButton.SECONDARY) {
-                            tx = "look into "+i.getName(); 
-                            hotovo = game.zpracujPrikaz(tx); 
-                            adventura.textCenterPrikaz(tx);
-                adventura.textCenterText(hotovo);
+                            command = "look into "+i.getName(); 
+                            gameAnswer = game.executeCommand(command); 
+                            adventura.appendCommandFromButton(command);
+                adventura.appendGameReplyToButtonAction(gameAnswer);
                         }
                 
                 
@@ -102,8 +96,17 @@ public class ThingsInRoomBar extends HBox implements Observer {
                 }
                 }
                 });
-                    
-            this.getChildren().add(item);
+            
+            
+            if (this.getChildren().size() == 1) {
+                this.addColumn(2, item);
+            } 
+            else if (this.getChildren().size() == 2) {
+                this.addRow(2, item);
+            }
+            else {
+                this.getChildren().add(item);
+            }
         }
         }
         }

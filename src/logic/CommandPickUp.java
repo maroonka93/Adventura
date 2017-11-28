@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logika;
+package logic;
 
 /**
  * Command used for picking up things. Picked up things are stored in the inventory.
@@ -12,7 +12,7 @@ package logika;
 public class CommandPickUp implements ICommand {
     
     private GamePlan plan;
-    private static final String NAZEV = "pick up";
+    private static final String NAME = "pick up";
 
     /**
      *
@@ -25,13 +25,13 @@ public class CommandPickUp implements ICommand {
     
 
     @Override
-    public String proved(String... parametry) {
+    public String doCommand(String... parametres) {
         String answer = "";
-        if (parametry.length == 0) {
+        if (parametres.length == 0) {
             // if no thing is given
             return "What am I supposed to pick up?";
         }
-        String nameOfPickedUp = parametry[0];
+        String nameOfPickedUp = parametres[0];
         Thing toBePickedUp = plan.getCurrentRoom().returnThingInRoom(nameOfPickedUp);
         if (toBePickedUp == null) {
             return nameOfPickedUp + " isn't here.";
@@ -59,8 +59,8 @@ public class CommandPickUp implements ICommand {
     }
 
     @Override
-    public String getNazev() {
-        return NAZEV;
+    public String getName() {
+        return NAME;
     }
     
 }

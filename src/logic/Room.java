@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logika;
+package logic;
 
 import java.util.Collection;
 import java.util.Collections;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logika;
+package logic;
 
 /**
  * Draws map of the adventure.
@@ -11,11 +11,11 @@ package logika;
  */
 public class CommandDrawMap implements ICommand {
     
-    private static final String NAZEV = "draw map";
+    private static final String NAME = "draw map";
 
     @Override
-    public String proved(String... parametry) {
-        if (parametry.length > 0) {
+    public String doCommand(String... parametres) {
+        if (parametres.length > 0) {
             return "Show what? I don't understand, why there's another word after this command.";
         }
         else {
@@ -39,8 +39,8 @@ public class CommandDrawMap implements ICommand {
     }
 
     @Override
-    public String getNazev() {
-        return this.NAZEV;
+    public String getName() {
+        return this.NAME;
     }
     
 }

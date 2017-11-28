@@ -4,15 +4,15 @@
  * and open the template in the editor.
  */
 
-import logika.CommandDrawMap;
-import logika.Game;
-import logika.CommandGoTo;
-import logika.CommandEndGame;
-import logika.CommandLookInto;
-import logika.CommandPickUp;
-import logika.CommandShowExits;
-import logika.CommandShowInventory;
-import logika.ListOfCommands;
+import logic.CommandDrawMap;
+import logic.Game;
+import logic.CommandGoTo;
+import logic.CommandEndGame;
+import logic.CommandLookInto;
+import logic.CommandPickUp;
+import logic.CommandShowExits;
+import logic.CommandShowInventory;
+import logic.ListOfCommands;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -36,50 +36,50 @@ public class ListOfCommandsTest {
     public void setUp() {
         hra = new Game();
         prKonec = new CommandEndGame(hra);
-        prJdi = new CommandGoTo(hra.getHerniPlan());
-        prPickUp = new CommandPickUp(hra.getHerniPlan());
-        prLookInto = new CommandLookInto(hra.getHerniPlan());
-        prShowIn = new CommandShowInventory(hra.getHerniPlan());
-        prShowEx = new CommandShowExits(hra.getHerniPlan());
+        prJdi = new CommandGoTo(hra.getGamePlan());
+        prPickUp = new CommandPickUp(hra.getGamePlan());
+        prLookInto = new CommandLookInto(hra.getGamePlan());
+        prShowIn = new CommandShowInventory(hra.getGamePlan());
+        prShowEx = new CommandShowExits(hra.getGamePlan());
         prDrawMap = new CommandDrawMap();
     }
 
     @Test
     public void testVlozeniVybrani() {
         ListOfCommands seznPrikazu = new ListOfCommands();
-        seznPrikazu.vlozPrikaz(prKonec);
-        seznPrikazu.vlozPrikaz(prJdi);
-        seznPrikazu.vlozPrikaz(prPickUp);
-        seznPrikazu.vlozPrikaz(prLookInto);
-        seznPrikazu.vlozPrikaz(prShowIn);
-        seznPrikazu.vlozPrikaz(prShowEx);
-        seznPrikazu.vlozPrikaz(prDrawMap);
-        assertEquals(prKonec, seznPrikazu.vratPrikaz("end game"));
-        assertEquals(prJdi, seznPrikazu.vratPrikaz("go to"));
-        assertEquals(null, seznPrikazu.vratPrikaz("get help"));
-        assertEquals(prPickUp, seznPrikazu.vratPrikaz("pick up"));
-        assertEquals(prLookInto, seznPrikazu.vratPrikaz("look into"));
-        assertEquals(prShowIn, seznPrikazu.vratPrikaz("show inventory"));
-        assertEquals(prShowEx, seznPrikazu.vratPrikaz("show exits"));
-        assertEquals(prDrawMap, seznPrikazu.vratPrikaz("draw map"));
+        seznPrikazu.addCommand(prKonec);
+        seznPrikazu.addCommand(prJdi);
+        seznPrikazu.addCommand(prPickUp);
+        seznPrikazu.addCommand(prLookInto);
+        seznPrikazu.addCommand(prShowIn);
+        seznPrikazu.addCommand(prShowEx);
+        seznPrikazu.addCommand(prDrawMap);
+        assertEquals(prKonec, seznPrikazu.returnCommand("end game"));
+        assertEquals(prJdi, seznPrikazu.returnCommand("go to"));
+        assertEquals(null, seznPrikazu.returnCommand("get help"));
+        assertEquals(prPickUp, seznPrikazu.returnCommand("pick up"));
+        assertEquals(prLookInto, seznPrikazu.returnCommand("look into"));
+        assertEquals(prShowIn, seznPrikazu.returnCommand("show inventory"));
+        assertEquals(prShowEx, seznPrikazu.returnCommand("show exits"));
+        assertEquals(prDrawMap, seznPrikazu.returnCommand("draw map"));
     }
     @Test
     public void testJePlatnyPrikaz() {
         ListOfCommands seznPrikazu = new ListOfCommands();
-        seznPrikazu.vlozPrikaz(prKonec);
-        seznPrikazu.vlozPrikaz(prJdi);
-        assertEquals(true, seznPrikazu.jePlatnyPrikaz("end game"));
-        assertEquals(true, seznPrikazu.jePlatnyPrikaz("go to"));
-        assertEquals(false, seznPrikazu.jePlatnyPrikaz("lookInto"));
-        assertEquals(false, seznPrikazu.jePlatnyPrikaz("Konec"));
+        seznPrikazu.addCommand(prKonec);
+        seznPrikazu.addCommand(prJdi);
+        assertEquals(true, seznPrikazu.isCommandValid("end game"));
+        assertEquals(true, seznPrikazu.isCommandValid("go to"));
+        assertEquals(false, seznPrikazu.isCommandValid("lookInto"));
+        assertEquals(false, seznPrikazu.isCommandValid("Konec"));
     }
     
     @Test
     public void testNazvyPrikazu() {
         ListOfCommands seznPrikazu = new ListOfCommands();
-        seznPrikazu.vlozPrikaz(prKonec);
-        seznPrikazu.vlozPrikaz(prJdi);
-        String nazvy = seznPrikazu.vratNazvyPrikazu();
+        seznPrikazu.addCommand(prKonec);
+        seznPrikazu.addCommand(prJdi);
+        String nazvy = seznPrikazu.returnNamesOfCommands();
         assertEquals(true, nazvy.contains("end game"));
         assertEquals(true, nazvy.contains("go to"));
         assertEquals(false, nazvy.contains("napoveda"));

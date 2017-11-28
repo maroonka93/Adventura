@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logika;
+package logic;
 
 /**
  *
@@ -15,17 +15,17 @@ public interface ICommand {
     /**
      *  
      *  
-     *  @param parametry 
+     *  @param parametres 
      * @return  String output
      *  
      */
-    public String proved(String... parametry);
+    public String doCommand(String... parametres);
     
     /**
      *  
      *  
-     *  @return nazev prikazu
+     *  @return name of command
      */
-	public String getNazev();
+	public String getName();
     
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logika;
+package logic;
 
 /**
  * Command that shows things currently in the inventory.
@@ -11,7 +11,7 @@ package logika;
  */
 public class CommandShowInventory implements ICommand {
     
-    private static final String NAZEV = "show inventory";
+    private static final String NAME = "show inventory";
 
     private GamePlan plan;
 
@@ -24,9 +24,9 @@ public class CommandShowInventory implements ICommand {
     }
 
     @Override
-    public String proved(String... parametry) {
+    public String doCommand(String... parametres) {
         // there should be no word behind this command
-        if (parametry.length > 0) {
+        if (parametres.length > 0) {
             return "Show what? I don't understand, why there's another word after this command.";
         }
         else {
@@ -35,8 +35,8 @@ public class CommandShowInventory implements ICommand {
     }
 
     @Override
-    public String getNazev() {
-        return this.NAZEV;
+    public String getName() {
+        return this.NAME;
     }
     
 }

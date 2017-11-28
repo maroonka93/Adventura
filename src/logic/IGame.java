@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logika;
+package logic;
 
 /**
  *
@@ -16,27 +16,27 @@ public interface IGame {
      *  
      * @return String
      */
-    public String vratUvitani();
+    public String returnWelcomeMessage();
     
     /**
      *  
      * @return String
      */
-    public String vratEpilog();
+    public String returnEpilogue();
     
     /** 
      * 
      * @return boolean
      */
-     public boolean konecHry();
+     public boolean endOfGame();
      
       /**
      *  
      *
-     *@param radek  
+     *@param line  
      *@return String
      */
-     public String zpracujPrikaz(String radek);
+     public String executeCommand(String line);
    
     
      /**
@@ -44,8 +44,8 @@ public interface IGame {
      *  
      *  @return GamePlan
      */
-     public GamePlan getHerniPlan();
+     public GamePlan getGamePlan();
 
-    public void setKonecHry(boolean b);
+    public void setEndOfGame(boolean b);
     
 }

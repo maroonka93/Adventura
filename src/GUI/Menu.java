@@ -15,11 +15,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import logika.Game;
-import logika.IGame;
+import logic.Game;
+import logic.IGame;
 
 /**
- *
+ * creates a menu with game and help properties
  * @author mp
  */
 public class Menu extends MenuBar{
@@ -34,20 +34,29 @@ public class Menu extends MenuBar{
         init();
     }
 
+    /*
+    * sets up menu
+    * menu consists of Game (New Game, End Game) and Help (About, Help)
+    * New Game resets the entire game, End Game ends the game instantly and closes the window
+    * About gives basic information about game in a pop-up window, Help opens a new window with HTML file
+    */
     private void init() {
-        javafx.scene.control.Menu newFile = new javafx.scene.control.Menu("Adventura");
+        javafx.scene.control.Menu newFile = new javafx.scene.control.Menu("Game");
         javafx.scene.control.Menu help = new javafx.scene.control.Menu("Help");
         
         MenuItem newGame = new MenuItem("New Game");
-        //, new ImageView(new Image(Main.class.getResourceAsStream("/zdroje/ikona.png")))
+        newGame.setAccelerator(KeyCombination.keyCombination("Ctrl+R"));
         
-        newGame.setAccelerator(KeyCombination.keyCombination("Ctrl+G"));
         MenuItem endGame = new MenuItem("End Game");
+        endGame.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
         
         newFile.getItems().addAll(newGame, endGame);
         
         MenuItem about = new MenuItem("About");
+        newGame.setAccelerator(KeyCombination.keyCombination("Ctrl+A"));
+        
         MenuItem helpItem = new MenuItem("Help");
+        newGame.setAccelerator(KeyCombination.keyCombination("Ctrl+H"));
         
         help.getItems().addAll(about, helpItem);
         
@@ -68,7 +77,7 @@ public class Menu extends MenuBar{
                 game = new Game();
                 adventura.getMap().newGame(game);
                 adventura.setGame(game);
-                adventura.getCentralText().setText(game.vratUvitani());
+                adventura.getCentralText().setText(game.returnWelcomeMessage());
                 adventura.getMap().newGame(game);
                 adventura.getExitsBar().newGame(game);
                 adventura.getInvBar().newGame(game);
@@ -81,14 +90,14 @@ public class Menu extends MenuBar{
             @Override
             public void handle(ActionEvent event) {
             
-                Alert oProgramuAlert = new Alert(Alert.AlertType.INFORMATION);
+                Alert aboutAlert = new Alert(Alert.AlertType.INFORMATION);
                 
-                oProgramuAlert.setTitle("About");
-                oProgramuAlert.setHeaderText("Dragoland adventure");
-                oProgramuAlert.setContentText("by Michaela Pavlickova (pavm05)");
-                oProgramuAlert.initOwner(adventura.getStage());
+                aboutAlert.setTitle("About");
+                aboutAlert.setHeaderText("Dragoland adventure");
+                aboutAlert.setContentText("by Michaela Pavlickova (pavm05)");
+                aboutAlert.initOwner(adventura.getStage());
                 
-                oProgramuAlert.showAndWait();
+                aboutAlert.showAndWait();
             }
         });
         
@@ -98,11 +107,11 @@ public class Menu extends MenuBar{
             public void handle(ActionEvent event) {
 
                 Stage stage = new Stage();
-                stage.setTitle("Napoveda");
+                stage.setTitle("Help");
                 
                 WebView webView = new WebView();
                 
-                webView.getEngine().load(Adventura.class.getResource("/source/help.html").toExternalForm());
+                webView.getEngine().load(Adventura.class.getResource("/sources/help.html").toExternalForm());
                 
                 stage.setScene(new Scene(webView, 500,500));
                 stage.show();

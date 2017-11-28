@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logika;
+package logic;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import utils.Observer;
 import utils.Subject;
 
@@ -48,7 +46,7 @@ public class GamePlan implements Subject {
      * as starting position.
      */
     public GamePlan() {
-        this.zalozProstoryHry();
+        this.setUpRooms();
         this.setExitsInRooms();
         this.setDescriptionsToRooms();
         this.setThingsInRooms();
@@ -101,8 +99,8 @@ public class GamePlan implements Subject {
     /**
      *  Creates rooms. Sets "throne room" as starting position.
      */
-    private void zalozProstoryHry() {
-        // vytvĂˇĹ™ejĂ­ se jednotlivĂ© prostory
+    private void setUpRooms() {
+        // creates all rooms
         this.beforeGates = new Room("before gates",30,120);
         this.castle = new Room("castle",90,80);
         this.village = new Room("village",90,155);
@@ -158,22 +156,27 @@ public class GamePlan implements Subject {
      * sets descriptions to rooms
      */
     private void setDescriptionsToRooms() {
-        beforeGates.setDescription("A devastated king paces in the throne room. 'Please, please, our most beloved savior, bring her back to me!'");
+        beforeGates.setDescription("A devastated king paces in front of the gates. 'Please, please, our most beloved savior, bring her back to me!'");
         castle.setDescription("The castle is princess' home. Maybe a look around for some helpful clues?");
         closet.setDescription("Only the chosen ones can enter the wardrobe... or at least those with a key.");
-        bedroom.setDescription("A guard is on the watch before princess' chamber! However, he looks very thirsty. Maybe he would accept a bribe?");
-        kitchen.setDescription("Royal kitchen has the best chef in the entire kingdom. She makes heavenly bread and she does have a soft spot for poor people.");
+        bedroom.setDescription("A guard is on the watch before princess' chamber! However, he looks very thirsty. " + "\n" 
+                + "Maybe he would accept a bribe?");
+        kitchen.setDescription("Royal kitchen has the best chef in the entire kingdom. She makes heavenly bread " + "\n" 
+                + "and she does have a soft spot for poor people.");
         village.setDescription("The village that surrounds the castle's wall is full of all kinds of people... and suprises.");
-        this.stables.setDescription("Lots and lots of horses... and a stable boy guarding them. He looks even more devastated than the king. " + "\n" 
-                + "A family tragedy or does he have a thing for our princess? If the latter, he could use something to remind him of her... or not.");
+        this.stables.setDescription("Lots and lots of horses... and a stable boy guarding them. He looks even more " + "\n" 
+                + "devastated than the king. A family tragedy or does he have a thing for our princess?" + "\n" 
+                + "If the latter, he could use something to remind him of her... or not.");
         this.church.setDescription("A beggar sits on the bench, praying silently. 'Our chef, she has the kindest of hearts." + "\n" 
-                + "The more pitiful you look, the more bread she gives you!");
-        this.inn.setDescription("The innkeeper gives you a stern look. 'If you don't have anything to pay with, don't even bother coming in!'");
+                + "The more pitiful you look, the more bread she gives you!'");
+        this.inn.setDescription("The innkeeper gives you a stern look. 'If you don't have anything to pay with, " + "\n" 
+                + "don't even bother coming in!'");
         this.forrest.setDescription("The forrest is dark and full of terrors... or bunnies. I love bunnies.");
         this.trail.setDescription("There is no way you're making it on this trail on your own two feet!");
-        this.cemetery.setDescription("OOOOHHH! A scary ghost emerges from the tomb! 'Off to save our princess, aye? Lost forever she is... " + "\n" 
-                + "a terrible dragon took her to its home! Not a very bright one tho, thinks anything big and round is a precious stone! Ha-ha!'");
-        this.cliff.setDescription("You found her! Our poor princess is right down the cliff! You climb down to rescue her... "+ "\n"
+        this.cemetery.setDescription("OOOOHHH! A scary ghost emerges from the tomb! 'Off to save our princess, aye? " + "\n" 
+                + "Lost forever she is... a terrible dragon took her to its home! Not a very bright" + "\n" 
+                + "one tho, thinks anything big and round is a precious stone! Ha-ha!'");
+        this.cliff.setDescription("You found her! Our poor princess is right down the cliff! You climb down to rescue her. "+ "\n"
                 + "The terrible dragon shifts his focus to your direction. Quickly, think of something!");
     }
     
@@ -214,48 +217,24 @@ public class GamePlan implements Subject {
         this.forrest.setThingsInRoom(bush);
         
         Thing bread = new Thing (false, "bread", false, "/sources/bread.jpg");
-            this.kitchen.setThingsInRoom(bread);
-            bread.setCondition("beggarsCoat");
+        this.kitchen.setThingsInRoom(bread);
+        bread.setCondition("beggarsCoat");
             
         Thing tomb = new Thing (false, "tomb", true, "/sources/tomb.jpg");
         Thing rope = new Thing (true, "rope", false, "/sources/rope.jpg");
-            tomb.setContent(rope);
-            this.cemetery.setThingsInRoom(tomb);
-            Thing rabbitHole = new Thing (false, "rabbitHole", true, "/sources/rabbitHole.jpg");
-            Thing key = new Thing (true, "key", false, "/sources/key.png");
-            rabbitHole.setContent(key);
-            this.forrest.setThingsInRoom(rabbitHole);
+        tomb.setContent(rope);
+        this.cemetery.setThingsInRoom(tomb);
+        Thing rabbitHole = new Thing (false, "rabbitHole", true, "/sources/rabbitHole.jpg");
+        Thing key = new Thing (true, "key", false, "/sources/key.png");
+        rabbitHole.setContent(key);
+        this.forrest.setThingsInRoom(rabbitHole);
             
         Thing princess = new Thing(true, "princess", false, "/sources/princess.jpg");
         princess.setCondition("bread");
         this.cliff.setThingsInRoom(princess);
         
-            //this.player.getInventory().addToInventory(key);
     }
     
-    /**
-     * exceptions that have to made once player chooses his character and gets a free thing
-     */
-    /*public void characterThingsSetUpExceptions() {
-        if (!this.player.getCharacter().equalsIgnoreCase("Priest")) {
-            Thing bread = new Thing (false, "bread", false);
-            this.kitchen.setThingsInRoom(bread);
-            bread.setCondition("beggarsCoat");
-            
-        }
-        Thing tomb = new Thing (false, "tomb", true);
-        if (!this.player.getCharacter().equalsIgnoreCase("Brave Warrior")) {
-            Thing rope = new Thing (true, "rope", false);
-            tomb.setContent(rope);
-        }
-        this.cemetery.setThingsInRoom(tomb);
-        Thing rabbitHole = new Thing (false, "rabbitHole", true);
-        if (!this.player.getCharacter().equalsIgnoreCase("Wise Man")) {
-            Thing key = new Thing (true, "key", false);
-            rabbitHole.setContent(key);
-        }
-        this.forrest.setThingsInRoom(rabbitHole);
-    }*/
     
     /*
     * sets locked rooms and things that have to be in players inventory for the
@@ -286,7 +265,6 @@ public class GamePlan implements Subject {
     public boolean conditionForPickingUp(Thing thing) {
         if (this.player.getInventory().isInInventory(thing.getCondition())) {
             thing.setPickable(true);
-            //System.out.println("You have the right item. You can pick up " + thing.getName() + " now.");
             return true;
         }
         return false;
@@ -298,34 +276,12 @@ public class GamePlan implements Subject {
      * @return boolean
      */
     public boolean conditionForGoingTo(Room room) {
-        /*if (room.getCondition().isEmpty()) {
-            return true;
-        }*/
         if (this.player.getInventory().isInInventory(room.getCondition())) {
             this.player.getInventory().removeFromInventory(room.getCondition());
-            //room.setAccessible(true);
             return true;
         }
-        //System.out.println(room.getDescription());
         return false;
     }
-    
-    /**
-     * returns true if player has the right item in the last room for ending the game
-     * @return boolean
-     */
-    /*public boolean cliffFinale() {
-        if (this.currentRoom.equals(cliff)) {
-            System.out.println();
-            if (this.player.getInventory().isInInventory("bread")) {
-                System.out.println();
-                return true;
-            }
-            System.out.println("OMG you forgot to bring something! Hurry back and find it!");
-            return false;
-        }
-        return false;
-    }*/
     
     @Override
     public void registerObserver(Observer observer) {

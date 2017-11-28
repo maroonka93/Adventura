@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logika;
+package logic;
 
 /**
  * Class CommandEndGame implements command "end game".
@@ -12,44 +12,44 @@ package logika;
  */
 public class CommandEndGame implements ICommand {
     
-    private static final String NAZEV = "end game";
+    private static final String NAME = "end game";
 
-    private Game hra;
+    private Game game;
 
     /**
      *  Constructor
      *  
-     *  @param hra game that is to be ended
+     *  @param game game that is to be ended
      */    
-    public CommandEndGame(Game hra) {
-        this.hra = hra;
+    public CommandEndGame(Game game) {
+        this.game = game;
     }
 
     /**
-     * If command has one word "konec", it ends, otherwise it keeps running.
+     * If command has two words "end game", it ends, otherwise it keeps running.
      * 
      * @return message for player
      */
 
     @Override
-    public String proved(String... parametry) {
+    public String doCommand(String... parametry) {
         if (parametry.length > 0) {
-            return "UkonÄŤit co? NechĂˇpu, proÄŤ jste zadal druhĂ© slovo.";
+            return "End what? I don't understand why there's a word after the command.";
         }
         else {
-            hra.setKonecHry(true);
-            return "hra ukonÄŤena pĹ™Ă­kazem konec";
+            game.setEndOfGame(true);
+            return "Game ended with command end game.";
         }
     }
 
     /**
      *  return name of the command
      *  
-     *  @ return NAZEV
+     *  @ return NAME
      */
     @Override
-    public String getNazev() {
-        return NAZEV;
+    public String getName() {
+        return NAME;
     }
     
 }

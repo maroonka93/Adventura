@@ -6,19 +6,16 @@
 package GUI;
 
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Paint;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import logika.IGame;
-import logika.Thing;
+import logic.IGame;
+import logic.Thing;
 import utils.Observer;
 
 /**
- *
+ * A vertical bar of buttons with pictures of things in player's inventory
  * @author mp
  */
 public class InventoryBar extends VBox implements Observer{
@@ -27,35 +24,32 @@ public class InventoryBar extends VBox implements Observer{
 
     public InventoryBar(IGame game) {
         this.game = game;
-        game.getHerniPlan().registerObserver(this);
-        //this.newGame(game);
+        game.getGamePlan().registerObserver(this);
         update();
     }
 
-
-    /*private void init() {
-        ImageView pictureImageView = new ImageView(new Image(adventura.Adventura.class.getResourceAsStream("/source/SpaceMap.png")) {});
-        
-        this.getChildren().addAll(pictureImageView);
-        update();
-        
-    }*/
-    
+    /*
+    * for a new game registers a new Observer and updates
+    */
     public void newGame(IGame newGame) {
-        game.getHerniPlan().removeObserver(this);
+        game.getGamePlan().removeObserver(this);
         game = newGame;
-        game.getHerniPlan().registerObserver(this);
+        game.getGamePlan().registerObserver(this);
         update();
     }
 
+    /*
+    * on update creates new Button for each thing in player's inventory
+    * buttons consist of an image on top and name of the thing underneath it
+    */
     @Override
     public void update() {
         this.getChildren().removeAll(getChildren());
         Button item = null;
-        for (Thing i : this.game.getHerniPlan().getPlayer().getInventory().getInInventory()) {
+        for (Thing i : this.game.getGamePlan().getPlayer().getInventory().getInInventory()) {
             item = new Button(i.getName(), new ImageView(new Image(adventura.Adventura.class.getResourceAsStream(i.getPicture()),100,100,false,false) {}));
-            //ImageView pictureImageView = new ImageView(new Image(adventura.Adventura.class.getResourceAsStream("/source/SpaceMap.png")) {});
             this.getChildren().add(item);
+            item.setContentDisplay(ContentDisplay.TOP);
         }
         
     }

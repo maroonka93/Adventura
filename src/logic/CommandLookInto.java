@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logika;
+package logic;
 
-import utils.Observer;
 
 /**
  * Command, that allows player to look into things (for example chests)
@@ -14,7 +13,7 @@ import utils.Observer;
 public class CommandLookInto implements ICommand {
     
     private GamePlan plan;
-    private static final String NAZEV = "look into";
+    private static final String NAME = "look into";
 
     /**
      *
@@ -27,12 +26,12 @@ public class CommandLookInto implements ICommand {
     
 
     @Override
-    public String proved(String... parametry) {
-        if (parametry.length == 0) {
+    public String doCommand(String... parametres) {
+        if (parametres.length == 0) {
             // if a word after command is missing
             return "What am I supposed to look into?";
         }
-        String nameOfLookedInto = parametry[0];
+        String nameOfLookedInto = parametres[0];
         Thing toBeLookedInto = plan.getCurrentRoom().returnThingInRoom(nameOfLookedInto);
         if (toBeLookedInto == null) {
             return nameOfLookedInto + " isn't here.";
@@ -56,8 +55,8 @@ public class CommandLookInto implements ICommand {
     }
 
     @Override
-    public String getNazev() {
-        return NAZEV;
+    public String getName() {
+        return NAME;
     }
 
     

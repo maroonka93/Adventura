@@ -9,20 +9,14 @@ import adventura.Adventura;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import logika.IGame;
-import logika.Room;
-import logika.Thing;
+import logic.IGame;
+import logic.Room;
 import utils.Observer;
 
 /**
- *
+ *Creates a bar filled with buttons, each with one exit
+ * 
  * @author mp
  */
 public class ExitsBar extends HBox implements Observer {
@@ -32,47 +26,37 @@ public class ExitsBar extends HBox implements Observer {
 
     public ExitsBar(IGame game) {
         this.game = game;
-        game.getHerniPlan().registerObserver(this);
-        //this.newGame(game);
+        game.getGamePlan().registerObserver(this);
         update();
     }
-
-
-    /*private void init() {
-        ImageView pictureImageView = new ImageView(new Image(adventura.Adventura.class.getResourceAsStream("/source/SpaceMap.png")) {});
-        
-        this.getChildren().addAll(pictureImageView);
-        update();
-        
-    }*/
     
     public void newGame(IGame newGame) {
-        game.getHerniPlan().removeObserver(this);
+        game.getGamePlan().removeObserver(this);
         game = newGame;
-        game.getHerniPlan().registerObserver(this);
+        game.getGamePlan().registerObserver(this);
         update();
     }
 
+    /*
+    * updates buttons every time current room changes,
+    * assigns command "go to" to each button
+    */
     @Override
     public void update() {
         this.getChildren().removeAll(getChildren());
         
         Button item = null;
-        for (Room r : this.game.getHerniPlan().getCurrentRoom().getExits()) {
+        for (Room r : this.game.getGamePlan().getCurrentRoom().getExits()) {
             item = new Button(r.getName());
-            //ImageView pictureImageView = new ImageView(new Image(adventura.Adventura.class.getResourceAsStream("/source/SpaceMap.png")) {});
             
             item.setOnAction(new EventHandler <ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    /*String txt = ExitsBar.this.game.zpracujPrikaz("go to " + r.getName());
-                adventura.Adventura.setCentralTextAppend(txt);*/
-                    if (!game.konecHry()){
-                String tx = "go to "+r.getName(); 
-                String hotovo = game.zpracujPrikaz(tx); 
-                adventura.textCenterPrikaz(tx);
-                adventura.textCenterText(hotovo);
-                //ExitsBar.this.update();
+                    if (!game.endOfGame()){
+                        String command = "go to "+r.getName(); 
+                        String gameAnswer = game.executeCommand(command); 
+                        adventura.appendCommandFromButton(command);
+                        adventura.appendGameReplyToButtonAction(gameAnswer);
                 }
                 }
                 });
@@ -80,8 +64,6 @@ public class ExitsBar extends HBox implements Observer {
              this.getChildren().add(item);       
         
     }
-
-    
     
 }
 

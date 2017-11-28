@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logika;
+package logic;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class ListOfCommands {
     
    
-    private  Map<String,ICommand> mapaSPrikazy;
+    private  Map<String,ICommand> mapOfCommands;
     
    
     
@@ -23,28 +23,28 @@ public class ListOfCommands {
      * Konstruktor
      */
     public ListOfCommands() {
-        mapaSPrikazy = new HashMap<>();
+        mapOfCommands = new HashMap<>();
     }
     
     
     /**
      * 
      *
-     *@param prikaz  
+     *@param command  
      */
-    public void vlozPrikaz(ICommand prikaz) {
-        mapaSPrikazy.put(prikaz.getNazev(),prikaz);
+    public void addCommand(ICommand command) {
+        mapOfCommands.put(command.getName(),command);
     }
     
     /**
      * 
      *
-     *@param retezec  
+     *@param string  
      *@return ICommand
      */
-    public ICommand vratPrikaz(String retezec) {
-        if (mapaSPrikazy.containsKey(retezec)) {
-            return mapaSPrikazy.get(retezec);
+    public ICommand returnCommand(String string) {
+        if (mapOfCommands.containsKey(string)) {
+            return mapOfCommands.get(string);
         }
         else {
             return null;
@@ -54,11 +54,11 @@ public class ListOfCommands {
     /**
      * 
      *
-     *@param retezec  
+     *@param string  
      *@return boolean
      */
-    public boolean jePlatnyPrikaz(String retezec) {
-        return mapaSPrikazy.containsKey(retezec);
+    public boolean isCommandValid(String string) {
+        return mapOfCommands.containsKey(string);
     }
 
     /**
@@ -66,12 +66,12 @@ public class ListOfCommands {
      *  
      *  @return String
      */
-    public String vratNazvyPrikazu() {
-        String seznam = "";
-        for (String slovoPrikazu : mapaSPrikazy.keySet()){
-            seznam += slovoPrikazu + " ";
+    public String returnNamesOfCommands() {
+        String list = "";
+        for (String wordOfCommand : mapOfCommands.keySet()){
+            list += wordOfCommand + " ";
         }
-        return seznam;
+        return list;
     }
     
 }

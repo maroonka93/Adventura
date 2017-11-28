@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logika;
+package logic;
 
 /**
  * Command that gives the player a list of exists from the room he currently finds himself in.
@@ -11,7 +11,7 @@ package logika;
  */
 public class CommandShowExits implements ICommand {
     
-    private static final String NAZEV = "show exits";
+    private static final String NAME = "show exits";
 
     private GamePlan plan;
 
@@ -26,7 +26,7 @@ public class CommandShowExits implements ICommand {
     
 
     @Override
-    public String proved(String... parametry) {
+    public String doCommand(String... parametry) {
         // nothing should be after this command
         if (parametry.length > 0) {
             return "Show what? I don't understand, why there's another word after this command.";
@@ -37,8 +37,8 @@ public class CommandShowExits implements ICommand {
     }
 
     @Override
-    public String getNazev() {
-        return this.NAZEV;
+    public String getName() {
+        return this.NAME;
     }
     
 }

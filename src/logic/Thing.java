@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logika;
+package logic;
 
 import java.util.Objects;
-import javafx.scene.image.Image;
 
 /**
  * Implements things that are in rooms (and inventory)
@@ -16,7 +15,6 @@ public class Thing {
     
     private boolean pickable;
     private final String name;
-    //private String description;
     private final boolean lookableInto;
     private Thing content = null;
     private String condition = null;

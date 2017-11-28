@@ -19,23 +19,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import logika.Game;
-import logika.IGame;
-import uiText.TextoveRozhrani;
+import logic.Game;
+import logic.IGame;
+import uiText.TextUI;
 
 /**
  * Runnable file of adventure. Contains main.
@@ -66,20 +60,17 @@ public class Adventura extends Application {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        /*IGame hra = new Game();
-        TextoveRozhrani ui = new TextoveRozhrani(hra);
-        ui.hraj();*/
         if (args.length == 0) {
             launch(args);
         }
         else{
             if (args[0].equals("-txt")) {
                 IGame game = new Game();
-                TextoveRozhrani textHra = new TextoveRozhrani(game);
-                textHra.hraj();
+                TextUI textGame = new TextUI(game);
+                textGame.hraj();
             }
             else{
-                System.out.println("Neplatny parametr");
+                System.out.println("Wrong parameter");
                 System.exit(1);
             }
         }
@@ -101,8 +92,8 @@ public class Adventura extends Application {
         centralText = new TextArea();
         centralText.setPrefHeight(400);
         centralText.setPrefWidth(600);
-        centralText.setMaxSize(600, 400);
-        centralText.setText(game.vratUvitani());
+        centralText.setMaxSize(600, 600);
+        centralText.setText(game.returnWelcomeMessage());
         centralText.setEditable(false);
         borderPane.setCenter(centralText);
         
@@ -112,21 +103,21 @@ public class Adventura extends Application {
         enterCommand = new TextField("...");
         enterCommand.setOnAction(new EventHandler<ActionEvent>() {
         
-        @Override
+            @Override
             public void handle(ActionEvent event) {
 
-                String vstupniPrikaz = enterCommand.getText();
-                String odpovedHry = game.zpracujPrikaz(vstupniPrikaz);
+                String enteredCommand = enterCommand.getText();
+                String gameReply = game.executeCommand(enteredCommand);
                 
-                centralText.appendText("\n" + vstupniPrikaz + "\n");
-                centralText.appendText("\n" + odpovedHry + "\n");
+                centralText.appendText("\n" + enteredCommand + "\n");
+                centralText.appendText("\n" + gameReply + "\n");
                 
                 enterCommand.setText("");
                 
-                if (game.getHerniPlan().getPlayer().getInventory().isInInventory("princess")) {
-                    game.setKonecHry(true);
+                if (game.getGamePlan().getPlayer().getInventory().isInInventory("princess")) {
+                    game.setEndOfGame(true);
                     enterCommand.setEditable(false);
-                    centralText.appendText(game.vratEpilog());
+                    centralText.appendText(game.returnEpilogue());
                 }
             }
     });
@@ -135,47 +126,33 @@ public class Adventura extends Application {
         bottomPane.setAlignment(Pos.CENTER);
         bottomPane.getChildren().addAll(enterCommandLabel, enterCommand);
         
-        //borderPane.setLeft(map);
         borderPane.setBottom(bottomPane);
         borderPane.setTop(menu);
-        //borderPane.setRight(invBar);
-        
         
         invBar.update();
-        //borderPane.setLeft(invBar);
         
-        //borderPane.getChildren().addAll(invBar, invLabel);
         Label invLabel = new Label("Inventory: ");
         invLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         invLabel.setAlignment(Pos.TOP_LEFT);
         VBox vbox = new VBox();
         vbox.getChildren().addAll(invLabel, invBar);
-        vbox.setMinWidth(100);
-        //vbox.autosize();
-        //vbox.visibleProperty();
+        vbox.setMinWidth(150);
         borderPane.setRight(vbox);
         
         Label exitsLabel = new Label("Exits: ");
         exitsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        Label thingsLabel = new Label("Things in this room: ");
+        Label thingsLabel = new Label("Things in this room: " + "\n" + "(left click - pick up/right click - look into)");
         thingsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         HBox hboxExits = new HBox();
         hboxExits.getChildren().addAll(exitsBar);
-        /*HBox hboxThings = new HBox();
-        hboxThings.setLayoutX(1);
-        hboxThings.getChildren().addAll(things);*/
         GridPane grid = new GridPane();
-        grid.setLayoutX(1);
-        grid.setLayoutY(2);
         grid.getChildren().addAll(things);
         VBox buttons = new VBox();
         buttons.getChildren().addAll(map, exitsLabel, hboxExits, thingsLabel, grid);
-        //vbox.autosize();
-        //vbox.visibleProperty();
         borderPane.setLeft(buttons);
         
-        Scene scene = new Scene(borderPane, 1200, 500);
-        primaryStage.setTitle("Adventura");
+        Scene scene = new Scene(borderPane, 1200, 700);
+        primaryStage.setTitle("Dragoland");
         primaryStage.setScene(scene);
         primaryStage.show();
         enterCommand.requestFocus();
@@ -197,19 +174,15 @@ public class Adventura extends Application {
     public Map getMap() {
         return map;
     }
-
-    /*public void setCentralTextAppend(String appended) {
-        centralText.appendText(appended);
-    }*/
     
-    public void textCenterPrikaz(String radek) 
+    public void appendCommandFromButton(String line) 
     {
-         centralText.appendText("\n\n" + radek + "\n");;   
+         centralText.appendText("\n" + line + "\n");;   
     }
     
-    public void textCenterText(String text) 
+    public void appendGameReplyToButtonAction(String reply) 
     {
-         centralText.appendText("\n\n" + text + "\n");;   
+         centralText.appendText("\n" + reply + "\n");;   
     }
 
     public TextField getEnterCommand() {

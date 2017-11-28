@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logika;
+package logic;
 
 /**
  * Game puts together the game's necessities like Game Plan with Rooms and Things, List Of Commands.
@@ -13,24 +13,24 @@ package logika;
  */
 public class Game implements IGame {
  
-    private ListOfCommands platnePrikazy;    // list of commands that can be used
-    private GamePlan herniPlan;
-    private boolean konecHry = false;
+    private ListOfCommands validCommands;    // list of commands that can be used
+    private GamePlan gamePlan;
+    private boolean endOfGame = false;
 
     /**
      *  Creates game, initializes rooms and things (via class GamePlan) and list of commands
      */
     public Game() {
-        herniPlan = new GamePlan();
-        platnePrikazy = new ListOfCommands();
-        platnePrikazy.vlozPrikaz(new CommandGetHelp(platnePrikazy));
-        platnePrikazy.vlozPrikaz(new CommandGoTo(herniPlan));
-        platnePrikazy.vlozPrikaz(new CommandEndGame(this));
-        this.platnePrikazy.vlozPrikaz(new CommandPickUp(herniPlan));
-        this.platnePrikazy.vlozPrikaz(new CommandLookInto(herniPlan));
-        this.platnePrikazy.vlozPrikaz(new CommandShowInventory(herniPlan));
-        this.platnePrikazy.vlozPrikaz(new CommandShowExits(herniPlan));
-        //this.platnePrikazy.vlozPrikaz(new CommandDrawMap());
+        gamePlan = new GamePlan();
+        validCommands = new ListOfCommands();
+        validCommands.addCommand(new CommandGetHelp(validCommands));
+        validCommands.addCommand(new CommandGoTo(gamePlan));
+        validCommands.addCommand(new CommandEndGame(this));
+        this.validCommands.addCommand(new CommandPickUp(gamePlan));
+        this.validCommands.addCommand(new CommandLookInto(gamePlan));
+        this.validCommands.addCommand(new CommandShowInventory(gamePlan));
+        this.validCommands.addCommand(new CommandShowExits(gamePlan));
+        this.validCommands.addCommand(new CommandDrawMap());
     }
 
     /**
@@ -38,7 +38,7 @@ public class Game implements IGame {
      * @return String introduction
      */
     @Override
-    public String vratUvitani() {
+    public String returnWelcomeMessage() {
         return "There was once a princess, charming and stunning past " + "\n"
                 + "anyones imagination, a delicate creature everyone adored." + "\n"
                 + "She lived in a humble castle, in country which was " + "\n"
@@ -61,19 +61,20 @@ public class Game implements IGame {
      * @return String epilogue
      */
     @Override
-    public String vratEpilog() {
+    public String returnEpilogue() {
         return "You reach for the bread in your bag and throw it as far away as you can! The dragon," + "\n"
                 + "under the impression it's a precious stone, chases after it. You grab the princess and you both run" + "\n" 
-                        + " as fast as you can toward the castle!"+ "\n" + "Thx for playing. Hope to see you here again!";
+                        + " as fast as you can toward the castle!"+ "\n" + 
+                "\n" +"YOU WIN!!!"+ "\n" +"Thx for playing. Hope to see you here again!";
     }
     
     /** 
      * returns true if game is over;
-     * @return boolean konecHry
+     * @return boolean endOfGame
      */
     @Override
-     public boolean konecHry() {
-        return konecHry;
+     public boolean endOfGame() {
+        return endOfGame;
     }
 
     /**
@@ -81,38 +82,38 @@ public class Game implements IGame {
      *  than finds out what command it is (if it is one)
      *  than does the command
      *
-     *@param  radek  text that the player has entered
+     *@param  line  text that the player has entered
      *@return          message that is shown to player
      */
     
     @Override
-     public String zpracujPrikaz(String radek) {
-        String [] slova = radek.split("[ \t]+");
-        String slovoPrikazu = slova[0] + " " + slova[1];
-        String []parametry = new String[slova.length-2];
-        for(int i=0 ;i<parametry.length;i++){
-           	parametry[i]= slova[i+2];  	
+     public String executeCommand(String line) {
+        String [] words = line.split("[ \t]+");
+        String wordsOfCommand = words[0] + " " + words[1];
+        String []parametres = new String[words.length-2];
+        for(int i=0 ;i<parametres.length;i++){
+           	parametres[i]= words[i+2];  	
         }
-        String textKVypsani=" .... ";
-        if (platnePrikazy.jePlatnyPrikaz(slovoPrikazu)) {
-            ICommand prikaz = platnePrikazy.vratPrikaz(slovoPrikazu);
-            textKVypsani = prikaz.proved(parametry);
+        String textToReturn=" .... ";
+        if (validCommands.isCommandValid(wordsOfCommand)) {
+            ICommand command = validCommands.returnCommand(wordsOfCommand);
+            textToReturn = command.doCommand(parametres);
         }
         else {
-            textKVypsani="I don't know this command.";
+            textToReturn="I don't know this command.";
         }
-        return textKVypsani;
+        return textToReturn;
     }
     
     
      /**
      *  sets end of the game
      *  
-     *  @param  konecHry  hodnota false= konec hry, true = hra pokraÄŤuje
+     *  @param  endOfGame  hodnota false= konec hry, true = hra pokraÄŤuje
      */
     @Override
-    public void setKonecHry(boolean konecHry) {
-        this.konecHry = konecHry;
+    public void setEndOfGame(boolean endOfGame) {
+        this.endOfGame = endOfGame;
     }
     
      /**
@@ -121,13 +122,8 @@ public class Game implements IGame {
      *  @return     game plan
      */
     @Override
-     public GamePlan getHerniPlan(){
-        return herniPlan;
+     public GamePlan getGamePlan(){
+        return gamePlan;
      }
-    
-     /*public void gameIsWon() {
-         this.setKonecHry(true);
-         this.vratEpilog();
-     }*/
      
 }
